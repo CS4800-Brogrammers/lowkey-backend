@@ -6,3 +6,6 @@ def test(response):
 
 def ketan(request):
     return HttpResponse("Hello from Ketan")
+
+def ben(request):
+    return HttpResponse("I have a light semester. Why do I feel so swamped with work still? Q_Q")

@@ -9,3 +9,6 @@ def ketan(request):
 
 def ben(request):
     return HttpResponse("I have a light semester. Why do I feel so swamped with work still? Q_Q")
+
+def alfred(request):
+    return HttpResponse("Hi this is Alfred")

@@ -12,3 +12,5 @@ def ben(request):
 
 def alfred(request):
     return HttpResponse("Hi this is Alfred")
+def garrett(request):
+    return HttpResponse("My name is Garrett and I have so much swag")

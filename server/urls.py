@@ -24,5 +24,6 @@ urlpatterns = [
     path('ben/', views.ben),
     path('alfred/', views.alfred),
     path('garrett/', views.garrett),
-    path('lam/', views.lam)
+    path('lam/', views.lam),
+    path('bcrypt-test', views.bcrypt_test)
 ]

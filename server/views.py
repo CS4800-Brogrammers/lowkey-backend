@@ -1,5 +1,7 @@
+from django.db.utils  import OperationalError
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db import connections
 import bcrypt
 import googlemaps
 import psycopg2
@@ -35,8 +37,19 @@ def database_status(request):
     db_name = db_info['NAME']
     db_password = db_info['PASSWORD']
     db_user = db_info['USER']
+    conn = connections['default']
+    try:
+        c = conn.cursor()
+    except OperationalError:
+        reachable = False
+    else:
+        reachable = True
+
     try:
         conn=psycopg2.connect(database=db_name, user=db_user, password=db_password)
-        return HttpResponse(conn)
+        db_status = conn.status
     except Exception as e:
-        return HttpResponse(e)
+        print(e)
+        db_status = e
+
+    return HttpResponse("Database Reachable: "+str(reachable)+"\n\n"+str(db_status), content_type="text/plain")

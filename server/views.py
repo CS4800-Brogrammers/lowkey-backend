@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import bcrypt
 import googlemaps
+import psycopg2
+from . import settings
 
 def test(response):
     return HttpResponse("Testing my first HTTP API for CS4800 Assignment 3")
@@ -27,3 +29,14 @@ def bcrypt_test(request):
     text = "hello world".encode("utf-8")
     hash = bcrypt.hashpw(text, bcrypt.gensalt())
     return HttpResponse(hash)
+
+def database_status(request):
+    db_info = settings.DATABASES['default']
+    db_name = db_info['NAME']
+    db_password = db_info['PASSWORD']
+    db_user = db_info['USER']
+    try:
+        conn=psycopg2.connect(database=db_name, user=db_user, password=db_password)
+        return HttpResponse(conn)
+    except Exception as e:
+        return HttpResponse(e)

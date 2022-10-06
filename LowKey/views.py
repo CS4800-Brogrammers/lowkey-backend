@@ -3,6 +3,8 @@ from django.shortcuts import render
 import bcrypt
 import googlemaps
 
+def home(response):
+    return HttpResponse("This is the home page")
 def test(response):
     return HttpResponse("Testing my first HTTP API for CS4800 Assignment 3")
 

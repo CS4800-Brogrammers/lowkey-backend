@@ -9,6 +9,7 @@ urlpatterns = [
     path('alfred/', views.alfred),
     path('garrett/', views.garrett),
     path('lam/', views.lam),
-    path('bcrypt-test', views.bcrypt_test),
+    path('bcrypt-test/', views.bcrypt_test),
+    path('db-status/', views.database_status)
     # path('connect/', ReactView.as_view(), name = "something")
 ]

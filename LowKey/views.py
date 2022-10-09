@@ -2,10 +2,10 @@ from django.db.utils  import OperationalError
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import connections
+from django.conf import settings
 import bcrypt
 import googlemaps
 import psycopg2
-from . import settings
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response

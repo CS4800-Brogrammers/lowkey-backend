@@ -17,14 +17,5 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('test/', views.test),
-    path('ketan/', views.ketan),
-    path('ben/', views.ben),
-    path('alfred/', views.alfred),
-    path('garrett/', views.garrett),
-    path('lam/', views.lam),
-    path('bcrypt-test', views.bcrypt_test),
-    path('db-status', views.database_status),
     path('', include('LowKey.urls'))
 ]

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class LowkeyappConfig(AppConfig):
+class LowkeyConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'LOWKEYAPP'
+    name = 'LowKey'

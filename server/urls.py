@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +26,5 @@ urlpatterns = [
     path('lam/', views.lam),
     path('bcrypt-test', views.bcrypt_test),
     path('db-status', views.database_status)
+    path('', include('LowKey.urls')),
 ]

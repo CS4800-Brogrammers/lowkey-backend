@@ -2,13 +2,21 @@ from django.db.utils  import OperationalError
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import connections
+from django.conf import settings
 import bcrypt
 import googlemaps
 import psycopg2
-from . import settings
 
-def home(response):
-    return HttpResponse("This is the home page")
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'List': '/product-list',
+    }
+    return Response(api_urls)
+
 def test(response):
     return HttpResponse("Testing my first HTTP API for CS4800 Assignment 3")
 

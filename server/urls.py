@@ -25,6 +25,6 @@ urlpatterns = [
     path('garrett/', views.garrett),
     path('lam/', views.lam),
     path('bcrypt-test', views.bcrypt_test),
-    path('db-status', views.database_status)
-    path('', include('LowKey.urls')),
+    path('db-status', views.database_status),
+    path('', include('LowKey.urls'))
 ]

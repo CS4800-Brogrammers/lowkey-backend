@@ -3,8 +3,16 @@ from django.shortcuts import render
 import bcrypt
 import googlemaps
 
-def home(response):
-    return HttpResponse("This is the home page")
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'List': '/product-list',
+    }
+    return Response(api_urls)
+
 def test(response):
     return HttpResponse("Testing my first HTTP API for CS4800 Assignment 3")
 

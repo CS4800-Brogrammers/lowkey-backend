@@ -1,10 +1,8 @@
 from django.urls import path, include
-from django.conf.urls import url
 from . import views
-from views import *
 
 urlpatterns = [
-    path('', views.home),
+    path('', views.apiOverview),
     path('test/', views.test),
     path('ketan/', views.ketan),
     path('ben/', views.ben),

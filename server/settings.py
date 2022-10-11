@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
+
+# Get environment variables
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'LowKey.apps.LowkeyConfig',
-    'rest_framework'
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -49,7 +55,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware'
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+] 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -79,11 +94,11 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lowkey', 
-        'USER': 'postgres', 
-        'PASSWORD': 'n3k5g5ZeS3ze16wEfKOJ',
-        'HOST': 'cs480-lowkey.cfgxtot7grqp.us-west-1.rds.amazonaws.com', 
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'), 
+        'USER': os.getenv('DB_USER'), 
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'), 
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 

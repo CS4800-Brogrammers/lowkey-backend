@@ -1,5 +1,5 @@
 from django.db.utils  import OperationalError
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.db import connections
 from django.conf import settings
@@ -29,7 +29,7 @@ def ben(request):
     return HttpResponse("I have a light semester. Why do I feel so swamped with work still? Q_Q")
 
 def alfred(request):
-    return HttpResponse("Hi this is Alfred")
+    return JsonResponse({"text": "Hi this is Alfred"})
     
 def garrett(request):
     return HttpResponse("My name is Garrett and I have so much swag")

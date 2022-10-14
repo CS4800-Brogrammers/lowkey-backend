@@ -64,6 +64,8 @@ def database_status(request):
 
     return HttpResponse("Database Reachable: "+str(reachable)+"\n\n"+str(db_status), content_type="text/plain")
 
+
+
 # from django.shortcuts import render
 # from rest_framework.views import APIView
 # from . models import *

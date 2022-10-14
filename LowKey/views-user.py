@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -57,6 +58,12 @@ def registerPage(request):
     #return render(request, 'base/login_register.html', {'form':form})
     pass
 
+def getUser(request, pk):
+    user = User.objects.get(id =pk)
+    context = {'user': user}
+    return JsonResponse(context)
+    pass
+
 @login_required(login_url= 'login')
 def updateUser(request):
     user = request.user
@@ -73,7 +80,7 @@ def updateUser(request):
 
 #taken from stackoverflow https://stackoverflow.com/questions/33715879/how-to-delete-user-in-django
 @login_required(login_url = 'login')
-def deleteUser(request, pk):
+def deleteUser(request):
     try:
         user = request.user
         user.delete()

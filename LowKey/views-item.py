@@ -1,9 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import ItemForm
 from .models import Item
 
 #requires you to be logged in to create room / else be redirected
+def allItems(request):
+    items_all = Item.objects.all()
+    context = {'items_all':items_all}
+    return JsonResponse(context)
+
 @login_required(login_url = 'login')
 def createItem(request):
     form = ItemForm()
@@ -20,8 +25,13 @@ def createItem(request):
         #return redirect('home')
         pass
 
+def getItem(request, pk):
+    item = Item.objects.get(id=pk)
+    context = {'item':item}
+    return JsonResponse(context)
+
 @login_required(login_url = 'login')
-def updateRoom(request, pk):
+def updateItem(request, pk):
     item = Item.objects.get(id=pk)
     form = ItemForm(instance = item)
     #topics = Topic.objects.all()
@@ -45,7 +55,7 @@ def updateRoom(request, pk):
     pass
 
 @login_required(login_url = 'login')
-def deleteRoom(request, pk):
+def deleteItem(request, pk):
     item = Item.objects.get(id = pk)
 
     if request.user != item.owner:

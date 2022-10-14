@@ -85,4 +85,4 @@ def database_status(request):
 #         serializer = ReactSerializer(data=request.data)
 #         if serializer.is_valid(raise_exception=True):
 #             serializer.save()
-#             return  Response(serializer.data)
+#             return  Response(serializer.data) 

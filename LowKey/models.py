@@ -30,6 +30,10 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
 
+    def __str__(self):
+        return self.product_name
+
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

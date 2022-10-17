@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import *
+from .models import React, Profile, Shop, Product
 
 # Serializers are basically used to convert complex data to native 
 # Python datatypes that can then be easily rendered into 
@@ -14,7 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['profile_id', 
         'name',
-        'phoneNumber',
+        'phone_number',
         'email',
         'password',
         'description']
@@ -24,7 +24,7 @@ class ShopSerializer(serializers.ModelSerializer):
         model = Shop
         fields = ['profile_id',
         'address',
-        'Category',
+        'category',
         'link']
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -32,15 +32,6 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['product_id',
         'profile_id',
-        'productName',
-        'price',
-        'description']
-
-class ShopSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Shop
-        fields = ['product_id',
-        'profile_id',
-        'productName',
+        'product_name',
         'price',
         'description']

@@ -9,7 +9,21 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
+from .models import Product, Shop, Profile
+from .serializer import ProductSerializer, ShopSerializer, ProfileSerializer
 
+class ProductList(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        return queryset
+
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+    
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {

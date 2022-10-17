@@ -24,8 +24,8 @@ class Shop(models.Model):
     link = models.URLField()
 
 class Product(models.Model):
-    profile_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-    product_id = models.PositiveIntegerField(primary_key=True)
+    profile_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()

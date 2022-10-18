@@ -28,7 +28,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'List': '/product-list',
+        'List': '/product',
     }
     return Response(api_urls)
 

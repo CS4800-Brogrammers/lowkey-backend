@@ -11,14 +11,17 @@ class React(models.Model):
 
 class Profile(models.Model):
     profile_id = models.IntegerField(primary_key=True)
-    name = models.TextField()
+    name = models.TextField(unique=True)
     phone_number = models.CharField(max_length=12)
     email = models.EmailField()
     password = models.TextField(max_length=30)
     description = models.TextField()
 
 class Shop(models.Model):
-    profile_id = models.OneToOneField(Profile, primary_key=True, on_delete=models.CASCADE)
+    
+    profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    shop_id = models.AutoField(primary_key=True)
+    name = models.ForeignKey(Profile, related_name="shop_name", to_field='name', on_delete=models.CASCADE, default=str(Profile.name))
     address = models.TextField()
     category = models.TextField()
     link = models.URLField()
@@ -35,8 +38,9 @@ class Product(models.Model):
 
 
     class Meta:
+        """This is used to have both the profile and product id be a unique product key"""
         constraints = [
             models.UniqueConstraint(
-                fields=['profile_id', 'product_name'], name='unique_product_key'
+                fields=['profile_id', 'product_id'], name='unique_product_key'
             )
         ]

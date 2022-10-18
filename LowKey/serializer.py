@@ -23,6 +23,7 @@ class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
         fields = ['profile_id',
+        'name',
         'address',
         'category',
         'link']

@@ -17,6 +17,14 @@ class Profile(models.Model):
     password = models.TextField(max_length=30)
     description = models.TextField()
 
+    class Meta:
+        """Creates uniqueness with the name and profile_id"""
+        constraints = [
+            models.UniqueConstraint(
+                fields=['profile_id', 'name'], name = 'unique_profile'
+            )
+        ]
+
 class Shop(models.Model):
     
     profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)

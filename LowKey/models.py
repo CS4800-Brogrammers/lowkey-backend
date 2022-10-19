@@ -17,6 +17,9 @@ class Profile(models.Model):
     password = models.TextField(max_length=30)
     description = models.TextField()
 
+    def __str__(self):
+        return str(self.name)
+
     class Meta:
         """Creates uniqueness with the name and profile_id"""
         constraints = [

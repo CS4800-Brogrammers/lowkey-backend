@@ -14,7 +14,7 @@ class ProductModelTestcase(TestCase):
         self.assertEqual(product.price, 10.00)
 
 class ProductModelTestcase2(TestCase):
-    def create_product(self):
+    def setUp(self):
         Product.objects.create(product_name="Cookies", price=15.00, description="A dozen of your choice of cookie flavors")
 
     def test_price_product(self):

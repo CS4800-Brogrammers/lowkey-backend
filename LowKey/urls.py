@@ -7,7 +7,7 @@ urlpatterns = [
     path('product/<int:pk>/', views.ProductDetail.as_view()),
     path('test/', views.test),
     path('ketan/', views.ketan),
-    path('ben/', views.ben),
+    path('ben/', views.ben, name = 'ben'),
     path('alfred/', views.alfred),
     path('garrett/', views.garrett),
     path('lam/', views.lam),

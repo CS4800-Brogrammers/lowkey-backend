@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Product
+from LowKey.models import Product
 
 # Create your tests here.
 class ProductModelTestcase(TestCase):

@@ -1,5 +1,9 @@
 from django.test import TestCase
+<<<<<<< HEAD:LowKey/tests.py
 from .models import Product, Profile
+=======
+from LowKey.models import Product
+>>>>>>> 0e2eba5eab2e3857e9df8c4d96aa46ce586bac80:LowKey/test/test_models.py
 
 # Create your tests here.
 class ProductModelTestcase(TestCase):

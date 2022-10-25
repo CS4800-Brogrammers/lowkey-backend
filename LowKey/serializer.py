@@ -36,4 +36,6 @@ class ProductSerializer(serializers.ModelSerializer):
         'profile_id',
         'product_name',
         'price',
-        'description']
+        'description',
+        'rating',
+        'shop']

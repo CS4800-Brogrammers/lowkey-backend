@@ -1,6 +1,7 @@
 from asyncio import constants
 from itertools import product
 from pydoc import describe
+from random import randint
 from unicodedata import category
 from django.db import models
 
@@ -43,6 +44,8 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
+    rating = models.IntegerField(default=randint(1,5))
+    shop = models.TextField(max_length=100, default="Brogrammers")
 
     def __str__(self):
         return self.product_name

@@ -1,23 +1,40 @@
 from asyncio import constants
+from enum import unique
 from itertools import product
+from multiprocessing.sharedctypes import Value
 from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 # Create your models here.
 class React(models.Model):
     name = models.CharField(max_length=30)
     detail = models.CharField(max_length=500)
 
-class Profile(User):
+class ProfileManager(BaseUserManager):
+    """Used to manage a said profile"""
+    def create_user(self, email, password=None):
+        if not email:
+            raise ValueError('Please provide a valid email address')
+        profile = self.model(email=self.normalize_email(email))
+        profile.set_password(password)
+        profile.save()
+        return profile
+
+class Profile(AbstractBaseUser):
+    """Inherits from AbstractBaseUser"""
     profile_id = models.IntegerField(primary_key=True)
     name = models.TextField(unique=True)
     phone_number = models.CharField(max_length=12)
-    email = models.EmailField()
+    email = models.EmailField(verbose_name='email address', unique=True)
     password = models.TextField(max_length=30)
     description = models.TextField()
+
+    manager = ProfileManager()
+
+    USERNAME_FIELD = 'name'
 
     def __str__(self):
         return str(self.name)

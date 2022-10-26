@@ -12,6 +12,7 @@ urlpatterns = [
     path('garrett/', views.garrett),
     path('lam/', views.lam),
     path('bcrypt-test/', views.bcrypt_test),
-    path('db-status/', views.database_status)
+    path('db-status/', views.database_status),
+    path('profiles/', include('django.contrib.auth.urls'))
     # path('connect/', ReactView.as_view(), name = "something")
 ]

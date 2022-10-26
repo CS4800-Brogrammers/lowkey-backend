@@ -4,13 +4,14 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class React(models.Model):
     name = models.CharField(max_length=30)
     detail = models.CharField(max_length=500)
 
-class Profile(models.Model):
+class Profile(User):
     profile_id = models.IntegerField(primary_key=True)
     name = models.TextField(unique=True)
     phone_number = models.CharField(max_length=12)

@@ -4,6 +4,7 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class React(models.Model):
@@ -11,6 +12,7 @@ class React(models.Model):
     detail = models.CharField(max_length=500)
 
 class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_id = models.IntegerField(primary_key=True)
     name = models.TextField(unique=True)
     phone_number = models.CharField(max_length=12)

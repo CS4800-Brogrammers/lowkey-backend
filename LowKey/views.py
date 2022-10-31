@@ -1,8 +1,10 @@
+from urllib.request import Request
 from django.db.utils  import OperationalError
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import connections
 from django.conf import settings
+from django.contrib.auth.models import User
 import bcrypt
 import googlemaps
 import psycopg2
@@ -23,6 +25,12 @@ class ProductList(generics.ListCreateAPIView):
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+@api_view(['POST'])
+class UserCreate(generics.CreateAPIView):
+    
+    new_user = User.objects.create_user('username', 'email','password')
+    new_user.save()
 
     
 @api_view(['GET'])

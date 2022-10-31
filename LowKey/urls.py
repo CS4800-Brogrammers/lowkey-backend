@@ -1,17 +1,19 @@
 from django.urls import path, include
-from . import views
+from .views import *
 
 urlpatterns = [
-    path('', views.apiOverview),
-    path('product/', views.ProductList.as_view()),
-    path('product/<int:pk>/', views.ProductDetail.as_view()),
-    path('test/', views.test),
-    path('ketan/', views.ketan),
-    path('ben/', views.ben, name = 'ben'),
-    path('alfred/', views.alfred),
-    path('garrett/', views.garrett),
-    path('lam/', views.lam),
-    path('bcrypt-test/', views.bcrypt_test),
-    path('db-status/', views.database_status)
+    path('', apiOverview),
+    path('product/', ProductList.as_view()),
+    path('product/<int:pk>/', ProductDetail.as_view()),
+    path('test/', test),
+    path('ketan/', ketan),
+    path('ben/', ben, name = 'ben'),
+    path('alfred/', alfred),
+    path('garrett/', garrett),
+    path('lam/', lam),
+    path('bcrypt-test/', bcrypt_test),
+    path('db-status/', database_status),
+    path('register/', RegisterView.as_view()),
+    path('login/',LoginView.as_view())
     # path('connect/', ReactView.as_view(), name = "something")
 ]

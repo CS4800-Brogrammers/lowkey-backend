@@ -1,23 +1,32 @@
 from rest_framework import serializers
-from .models import React, Profile, Shop, Product
+from .models import *
 
 # Serializers are basically used to convert complex data to native 
 # Python datatypes that can then be easily rendered into 
 # JSON(Which we are going to use in React i.e. Client side). 
-class ReactSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = React
-        fields = ['name', 'detail']
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['profile_id', 
-        'name',
-        'phone_number',
+        model = User
+        fields = [ 
+        'username',
         'email',
-        'password',
-        'description']
+        'password'
+        ]
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [ 
+        'username',
+        'password'
+        ]
+
+    # def create(self, validated_data):
+    #     password = validated_data.pop('password',None)
+    #     instance = self.Meta.model(**validated_data)
+    #     if password is not None:
+    #         instance.set_password(password)
+    
 
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:

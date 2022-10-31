@@ -1,6 +1,7 @@
+from multiprocessing import AuthenticationError
 from urllib.request import Request
 from django.db.utils  import OperationalError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.db import connections
 from django.conf import settings
@@ -11,9 +12,10 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics
-from .models import Product, Shop, Profile
-from .serializer import ProductSerializer, ShopSerializer, ProfileSerializer
+from rest_framework import views
+from rest_framework import generics, status
+from .models import *
+from .serializer import *
 
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
@@ -26,11 +28,26 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
-@api_view(['POST'])
-class UserCreate(generics.CreateAPIView):
-    
-    new_user = User.objects.create_user('username', 'email','password')
-    new_user.save()
+
+class RegisterView(generics.CreateAPIView):
+    """Used for the creation of a user"""
+    serializer_class = UserCreateSerializer
+
+class LoginView(views.APIView):
+    """Used for the login and authentication of a user"""
+    def post(self, request):
+        user_email = request.data['email']
+        user_password = request.data['password']
+        user_name = request.data['username']
+        user = User.objects.get(email=user_email, username=user_name)
+        
+        if user is None: #Did not find a user
+            raise AuthenticationError("User not found")
+        if not user.check_password(user_password): #Incorrect Password
+            raise AuthenticationError("Incorrect Password")
+        return Response({
+            "message":"Logged In!"
+        })
 
     
 @api_view(['GET'])

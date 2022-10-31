@@ -4,46 +4,21 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+#Import Django's User model
 from django.contrib.auth.models import User
 
 # Create your models here.
-class React(models.Model):
-    name = models.CharField(max_length=30)
-    detail = models.CharField(max_length=500)
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_id = models.IntegerField(primary_key=True)
-    name = models.TextField(unique=True)
-    phone_number = models.CharField(max_length=12)
-    email = models.EmailField()
-    password = models.TextField(max_length=30)
-    description = models.TextField()
-
-    def __str__(self):
-        return str(self.name)
-
-    class Meta:
-        """Creates uniqueness with the name and profile_id"""
-        constraints = [
-            models.UniqueConstraint(
-                fields=['profile_id', 'name'], name = 'unique_profile'
-            )
-        ]
-
 class Shop(models.Model):
-    
-    profile_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
     shop_id = models.AutoField(primary_key=True)
-    name = models.ForeignKey(Profile, related_name="shop_name", to_field='name', on_delete=models.CASCADE, default=str(Profile.name))
+    name = models.TextField()
     address = models.TextField()
     category = models.TextField()
     link = models.URLField()
 
 class Product(models.Model):
-    profile_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    shop_id = models.ForeignKey(Shop, to_field='shop_id', on_delete=models.CASCADE)
     product_id = models.AutoField(primary_key=True)
-    product_name = models.CharField(max_length=100)
+    product_name = models.TextField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
     rating = models.IntegerField(default=randint(1,5))
@@ -57,6 +32,6 @@ class Product(models.Model):
         """This is used to have both the profile and product id be a unique product key"""
         constraints = [
             models.UniqueConstraint(
-                fields=['profile_id', 'product_id'], name='unique_product_key'
+                fields=['shop_id', 'product_id'], name='unique_product_key'
             )
         ]

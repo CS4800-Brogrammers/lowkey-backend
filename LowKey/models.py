@@ -32,7 +32,7 @@ class Profile(models.Model):
 class Shop(models.Model):
     
     shop_id = models.AutoField(primary_key=True)
-    name = models.ForeignKey(Profile, related_name="shop_name", to_field='name', on_delete=models.CASCADE, default=str(Profile.name))
+    name = models.TextField()
     address = models.TextField()
     category = models.TextField()
     link = models.URLField()

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'dj_rest_auth.registration',
     
     #local app
     'users',
@@ -110,7 +111,12 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'), 
         'PORT': os.getenv('DB_PORT'),
+
+        #'OPTIONS': {
+        #    'options': '-c search_path=main,dev'
+        #},
     }
+    
 }
 
 

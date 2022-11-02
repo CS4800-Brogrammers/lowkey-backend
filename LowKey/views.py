@@ -24,6 +24,11 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+#Shop API Endpoints
+class ShopList(generics.ListCreateAPIView):
+    serializer_class = ShopSerializer
+    queryset = Shop.objects.all()
+
     
 @api_view(['GET'])
 def apiOverview(request):

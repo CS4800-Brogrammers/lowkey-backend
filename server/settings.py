@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
-    'rest_framework_simplejwt.token_blacklist',
     #local app
     'users',
 ]
@@ -192,8 +191,6 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
 }
     
 

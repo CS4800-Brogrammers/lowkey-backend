@@ -22,8 +22,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ['profile_id',
-        'shop_id',
+        fields = ['shop_id',
         'name',
         'address',
         'category',

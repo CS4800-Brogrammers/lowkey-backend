@@ -14,7 +14,7 @@ from .models import *
 from users.models import *
 from .serializer import *
 from django.contrib.auth.decorators import login_required
-from permissions import *
+from .permissions import *
 
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer

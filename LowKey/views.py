@@ -1,5 +1,5 @@
 from django.db.utils  import OperationalError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.db import connections
 from django.conf import settings
@@ -9,9 +9,12 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics
-from .models import Product, Shop, Profile
-from .serializer import ProductSerializer, ShopSerializer, ProfileSerializer
+from rest_framework import generics, status
+from .models import *
+from users.models import *
+from .serializer import *
+from django.contrib.auth.decorators import login_required
+from permissions import *
 
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
@@ -25,9 +28,17 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
 
 #Shop API Endpoints
+
 class ShopList(generics.ListCreateAPIView):
+    model = Shop
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
+
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShopSerializer

@@ -24,7 +24,7 @@ class Shop(models.Model):
         ]
 
 class Product(models.Model):
-    profile_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -40,6 +40,6 @@ class Product(models.Model):
         """This is used to have both the profile and product id be a unique product key"""
         constraints = [
             models.UniqueConstraint(
-                fields=['profile_id', 'product_id'], name='unique_product_key'
+                fields=['shop_id', 'product_id'], name='unique_product_key'
             )
         ]

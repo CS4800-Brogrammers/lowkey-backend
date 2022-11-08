@@ -4,38 +4,24 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from users.models import *
 
 # Create your models here.
-class React(models.Model):
-    name = models.CharField(max_length=30)
-    detail = models.CharField(max_length=500)
-
-class Profile(models.Model):
-    profile_id = models.IntegerField(primary_key=True)
-    name = models.TextField(unique=True)
-    phone_number = models.CharField(max_length=12)
-    email = models.EmailField()
-    password = models.TextField(max_length=30)
-    description = models.TextField()
-
-    def __str__(self):
-        return str(self.name)
-
-    class Meta:
-        """Creates uniqueness with the name and profile_id"""
-        constraints = [
-            models.UniqueConstraint(
-                fields=['profile_id', 'name'], name = 'unique_profile'
-            )
-        ]
 
 class Shop(models.Model):
-    
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=0)
     shop_id = models.AutoField(primary_key=True)
     name = models.TextField()
     address = models.TextField()
     category = models.TextField()
     link = models.URLField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'shop_id'], name='unique_shop_key'
+            )
+        ]
 
 class Product(models.Model):
     profile_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)

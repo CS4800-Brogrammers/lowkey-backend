@@ -34,10 +34,11 @@ class ShopList(generics.ListCreateAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializers.save(user=self.request.user)
 
 
 class ShopDetail(generics.RetrieveUpdateDestroyAPIView):

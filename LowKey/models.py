@@ -5,16 +5,20 @@ from random import randint
 from unicodedata import category
 from django.db import models
 from users.models import *
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
+#Reference the user model being used in the framework
+User = get_user_model()
 # Create your models here.
 
 class Shop(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=0)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=0)
     shop_id = models.AutoField(primary_key=True)
     name = models.TextField()
     address = models.TextField()
     category = models.TextField()
-    link = models.URLField()
+    description = models.TextField()
 
     class Meta:
         constraints = [
@@ -30,7 +34,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
     rating = models.IntegerField(default=randint(1,5))
-    shop = models.TextField(max_length=100, default="Brogrammers")
 
     def __str__(self):
         return self.product_name

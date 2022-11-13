@@ -6,22 +6,22 @@ from .models import Shop, Product
 # JSON(Which we are going to use in React i.e. Client side). 
 
 class ShopSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='auth.User.id')
     class Meta:
         model = Shop
-        fields = ['user',
+        fields = ['user' ,
         'shop_id',
         'name',
         'address',
         'category',
-        'link']
+        'description']
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['product_id',
-        'profile_id',
+        'shop_id',
         'product_name',
         'price',
         'description',
-        'rating',
-        'shop']
+        'rating']

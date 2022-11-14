@@ -13,7 +13,7 @@ User = get_user_model()
 # Create your models here.
 
 class Shop(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=0)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     shop_id = models.AutoField(primary_key=True)
     name = models.TextField()
     address = models.TextField()

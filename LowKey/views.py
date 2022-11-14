@@ -9,7 +9,7 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics, status
+from rest_framework import generics, status, authentication, authtoken
 from .models import *
 from users.models import *
 from .serializer import *
@@ -34,16 +34,29 @@ class ShopList(generics.ListCreateAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
+    authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        serializers.save(user=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Shop Successfuly Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Shop Deleted Successfully")
 
     
 @api_view(['GET'])

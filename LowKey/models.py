@@ -20,6 +20,9 @@ class Shop(models.Model):
     category = models.TextField()
     description = models.TextField()
 
+    
+        
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

@@ -6,7 +6,7 @@ urlpatterns = [
         #https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/register/', include('dj_rest_auth.registration.urls')),
-    path('auth/api-token-auth/', obtain_auth_token)
+    path('auth/api-token-auth/', obtain_auth_token) #User endpoint to get the JWT token 
 ]
 
 

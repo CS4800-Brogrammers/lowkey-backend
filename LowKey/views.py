@@ -15,9 +15,14 @@ from users.models import *
 from .serializer import *
 from django.contrib.auth.decorators import login_required
 from .permissions import *
+from rest_framework_simplejwt.authentication import JWTAuthentication, JWTTokenUserAuthentication
 
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
 
     def get_queryset(self):
         queryset = Product.objects.all()
@@ -27,6 +32,10 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
 #Shop API Endpoints
 
 class ShopList(generics.ListCreateAPIView):
@@ -34,7 +43,8 @@ class ShopList(generics.ListCreateAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTTokenUserAuthentication, 
+                            JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 
@@ -46,7 +56,8 @@ class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTTokenUserAuthentication, 
+                            JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 

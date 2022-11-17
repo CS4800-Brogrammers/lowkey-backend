@@ -43,8 +43,6 @@ class ShopList(generics.ListCreateAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
-    authentication_classes = [JWTTokenUserAuthentication, 
-                            JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 
@@ -56,8 +54,6 @@ class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
 
-    authentication_classes = [JWTTokenUserAuthentication, 
-                            JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 

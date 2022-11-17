@@ -198,7 +198,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
 
     'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
-    'AUTH_HEADER_NAME': 'HTTP_X_ACCESS_TOKEN',
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
 }
     
 

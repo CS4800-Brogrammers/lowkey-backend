@@ -24,4 +24,6 @@ class ProductSerializer(serializers.ModelSerializer):
         'product_name',
         'price',
         'description',
-        'rating']
+        'rating',
+        'image',
+        ]

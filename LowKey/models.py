@@ -4,6 +4,10 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+def product_upload_to(instance, filename):
+    return 'products/{filename}'.format(filename=filename)
 
 
 # Create your models here.
@@ -21,7 +25,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
     rating = models.IntegerField(default=randint(1,5))
-    shop = models.TextField(max_length=100, default="Brogrammers")
+    image = models.ImageField(_("Image"), upload_to=product_upload_to, default="placeholder.jpg")
 
     def __str__(self):
         return self.product_name

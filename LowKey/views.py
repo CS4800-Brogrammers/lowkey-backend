@@ -10,10 +10,13 @@ import psycopg2
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializer import *
 
 class ProductList(generics.ListCreateAPIView):
+    parser_classes = [MultiPartParser, FormParser]
     serializer_class = ProductSerializer
 
     def get_queryset(self):

@@ -22,21 +22,23 @@ class Shop(models.Model):
 
     
         
+    ## Used to have a unique constraint using the user_id and shop_id
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'shop_id'], name='unique_shop_key'
-            )
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['user', 'shop_id'], name='unique_shop_key'
+    #         )
+    #     ]
 
 class Product(models.Model):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='products')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
-    rating = models.IntegerField(default=randint(1,5))
+    rating = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.product_name

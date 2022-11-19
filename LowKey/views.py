@@ -19,22 +19,36 @@ from rest_framework_simplejwt.authentication import JWTAuthentication, JWTTokenU
 
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
-
-    authentication_classes = [JWTAuthentication]
+    
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
 
     def get_queryset(self):
         queryset = Product.objects.all()
         return queryset
+    
+    
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
-    authentication_classes = [TokenAuthentication]
+    lookup_field = "product_id"
+
+    
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
     IsOwnerOrReadOnly]
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Deleted")
 
 #Shop API Endpoints
 

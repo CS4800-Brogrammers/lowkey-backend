@@ -7,17 +7,23 @@ from .models import Shop, Product
 
 class ShopSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='auth.User.id')
+    products = serializers.StringRelatedField(many=True)
+
     class Meta:
+        lookup_field = "shop_id"
         model = Shop
         fields = ['user' ,
         'shop_id',
         'name',
         'address',
         'category',
-        'description']
+        'description',
+        'products']
 
 class ProductSerializer(serializers.ModelSerializer):
+    
     class Meta:
+        lookup_field = "product_id"
         model = Product
         fields = ['product_id',
         'shop_id',

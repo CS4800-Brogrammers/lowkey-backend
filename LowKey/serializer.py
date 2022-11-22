@@ -21,7 +21,7 @@ class ShopSerializer(serializers.ModelSerializer):
         'products']
 
 class ProductSerializer(serializers.ModelSerializer):
-    
+    shop_id = serializers.ReadOnlyField(source='Shop.shop_id')
     class Meta:
         lookup_field = "product_id"
         model = Product

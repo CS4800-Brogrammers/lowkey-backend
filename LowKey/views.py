@@ -79,6 +79,52 @@ class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
         super().delete(request, *args, **kwargs)
         return HttpResponse("Shop Deleted Successfully")
 
+#Shop Product Endpoints
+class ShopProductList(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        shop_path = self.request.get_full_path()
+        shop_id_path = shop_path.split('/')[2]
+        print(shop_id_path)
+        queryset = Product.objects.filter(shop_id=shop_id_path)
+        return queryset
+    
+    
+
+    def perform_create(self, serializer):
+        shop_path = self.request.get_full_path()
+        shop_id_path = int(shop_path.split('/')[2])
+        shop = Shop.objects.get(pk=shop_id_path)
+        serializer.save(user=self.request.user, shop_id=shop)
+
+class ShopProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+
+    lookup_field = "product_id"
+
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        shop_path = self.request.get_full_path()
+        shop_id_path = shop_path.split('/')[2]
+        print(shop_id_path)
+        queryset = Product.objects.filter(shop_id=shop_id_path)
+        return queryset
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Deleted")
+
     
 @api_view(['GET'])
 def apiOverview(request):

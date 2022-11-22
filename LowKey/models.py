@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 # Create your models here.
 
+# Create your models here.
 class Shop(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     shop_id = models.AutoField(primary_key=True)

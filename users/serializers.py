@@ -8,5 +8,6 @@ class UserSerializer(ModelSerializer):
     shops = serializers.PrimaryKeyRelatedField(many=True, queryset=Shop.objects.all())
     
     class Meta:
+        lookup_field = "user_id"
         model = CustomUser
         fields = ('email', 'last_login', 'data_joined', 'is_staff')

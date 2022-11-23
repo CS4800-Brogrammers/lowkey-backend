@@ -79,6 +79,19 @@ class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
         super().delete(request, *args, **kwargs)
         return HttpResponse("Shop Deleted Successfully")
 
+class ShopUser(generics.ListAPIView):
+    serializer_class = ShopSerializer
+
+    lookup_field = "user_id"
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        print(self.request.user.pk)
+        queryset = Shop.objects.filter(user=self.request.user.pk)
+        return queryset
+
 #Shop Product Endpoints
 class ShopProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer

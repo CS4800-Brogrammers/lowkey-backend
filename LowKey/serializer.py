@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Shop, Product
+from .models import *
 
 # Serializers are basically used to convert complex data to native 
 # Python datatypes that can then be easily rendered into 

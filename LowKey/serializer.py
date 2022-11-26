@@ -6,22 +6,30 @@ from .models import *
 # JSON(Which we are going to use in React i.e. Client side). 
 
 class ShopSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='auth.User.id')
+    products = serializers.StringRelatedField(many=True)
+
     class Meta:
+        lookup_field = "shop_id"
         model = Shop
-        fields = [
+        fields = ['user' ,
         'shop_id',
         'name',
         'address',
         'category',
         'description',
         'rating']
+        'products']
 
 class ProductSerializer(serializers.ModelSerializer):
+    shop_id = ShopSerializer(read_only=True).data.get('shop_id')
+
+
     class Meta:
+        lookup_field = "product_id"
         model = Product
-        fields = [
+        fields = ['product_id',
         'shop_id',
-        'product_id',
         'product_name',
         'price',
         'description',

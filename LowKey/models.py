@@ -20,6 +20,7 @@ class Shop(models.Model):
     address = models.TextField()
     category = models.TextField()
     description = models.TextField()
+    rating = models.IntegerField(blank=True, null=True)
 
     
         

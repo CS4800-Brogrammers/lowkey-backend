@@ -13,7 +13,8 @@ class ShopSerializer(serializers.ModelSerializer):
         'name',
         'address',
         'category',
-        'description']
+        'description',
+        'rating']
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:

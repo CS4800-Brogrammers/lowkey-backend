@@ -12,7 +12,19 @@ class Shop(models.Model):
     name = models.TextField()
     address = models.TextField()
     category = models.TextField()
-    description = models.TextField(null=True)
+    description = models.TextField()
+    rating = models.IntegerField(blank=True, null=True)
+
+    
+        
+    ## Used to have a unique constraint using the user_id and shop_id
+
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['user', 'shop_id'], name='unique_shop_key'
+    #         )
+    #     ]
 
 class Product(models.Model):
     shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)

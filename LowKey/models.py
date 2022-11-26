@@ -21,6 +21,12 @@ class Shop(models.Model):
     category = models.TextField()
     description = models.TextField()
     rating = models.IntegerField(blank=True, null=True)
+    email = models.EmailField(null=True)
+    phone_number = models.CharField(max_length=12, null=True)
+
+    def get_shop_id(self):
+        return self.shop_id
+
 
     
         

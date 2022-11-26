@@ -61,7 +61,7 @@ class ShopList(generics.ListCreateAPIView):
     IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user, email=self.request.user.__getattribute__('email'))
 
 
 class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -110,7 +110,9 @@ class ShopProductList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         shop_path = self.request.get_full_path()
+        print(shop_path)
         shop_id_path = int(shop_path.split('/')[2])
+        print(shop_id_path)
         shop = Shop.objects.get(pk=shop_id_path)
         serializer.save(user=self.request.user, shop_id=shop)
 

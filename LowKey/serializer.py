@@ -7,8 +7,8 @@ from .models import *
 
 class ShopSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='auth.User.id')
-    products = serializers.StringRelatedField(many=True)
-
+    products = serializers.StringRelatedField(many=True, allow_null=True, read_only=True)
+    
     class Meta:
         lookup_field = "shop_id"
         model = Shop
@@ -19,12 +19,12 @@ class ShopSerializer(serializers.ModelSerializer):
         'category',
         'description',
         'rating',
-        'products']
+        'products',
+        'email',
+        'phone_number']
 
 class ProductSerializer(serializers.ModelSerializer):
     shop_id = ShopSerializer(read_only=True).data.get('shop_id')
-
-
     class Meta:
         lookup_field = "product_id"
         model = Product
@@ -34,3 +34,4 @@ class ProductSerializer(serializers.ModelSerializer):
         'price',
         'description',
         'rating']
+        read_only_fields = ['shop_id']

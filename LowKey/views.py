@@ -9,6 +9,7 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import generics, status, authentication, authtoken
 from .models import *
 from users.models import *
@@ -18,6 +19,7 @@ from .permissions import *
 from rest_framework_simplejwt.authentication import JWTAuthentication, JWTTokenUserAuthentication
 
 class ProductList(generics.ListCreateAPIView):
+    parser_classes = [MultiPartParser, FormParser]
     serializer_class = ProductSerializer
     
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -27,8 +29,8 @@ class ProductList(generics.ListCreateAPIView):
         queryset = Product.objects.all()
         return queryset
     
-    
 
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -53,6 +55,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 #Shop API Endpoints
 
 class ShopList(generics.ListCreateAPIView):
+    parser_classes = [MultiPartParser, FormParser]
     model = Shop
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
@@ -94,6 +97,7 @@ class ShopUser(generics.ListAPIView):
 
 #Shop Product Endpoints
 class ShopProductList(generics.ListCreateAPIView):
+    parser_classes = [MultiPartParser, FormParser]
     serializer_class = ProductSerializer
     
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,

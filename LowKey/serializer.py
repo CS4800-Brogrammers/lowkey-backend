@@ -21,7 +21,8 @@ class ShopSerializer(serializers.ModelSerializer):
         'rating',
         'products',
         'email',
-        'phone_number']
+        'phone_number',
+        'image']
 
 class ProductSerializer(serializers.ModelSerializer):
     shop_id = ShopSerializer(read_only=True).data.get('shop_id')
@@ -33,5 +34,6 @@ class ProductSerializer(serializers.ModelSerializer):
         'product_name',
         'price',
         'description',
+        'image',
         'rating']
         read_only_fields = ['shop_id']

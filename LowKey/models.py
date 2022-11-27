@@ -4,9 +4,16 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from users.models import *
 from django.conf import settings
 from django.contrib.auth import get_user_model
+
+def shop_upload_to(instance, filename):
+    return 'shops/{filename}'.format(filename=filename)
+
+def product_upload_to(instance, filename):
+    return 'products/{filename}'.format(filename=filename)
 
 #Reference the user model being used in the framework
 User = get_user_model()
@@ -23,6 +30,7 @@ class Shop(models.Model):
     rating = models.IntegerField(blank=True, null=True)
     email = models.EmailField(null=True)
     phone_number = models.CharField(max_length=12, null=True)
+    image = models.ImageField(_("Image"), upload_to=shop_upload_to, default="placeholder.jpg")
 
     def get_shop_id(self):
         return self.shop_id
@@ -47,6 +55,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
     rating = models.IntegerField(blank=True, null=True)
+    image = models.ImageField(_("Image"), upload_to=product_upload_to, default="placeholder.jpg")
 
     def __str__(self):
         return self.product_name

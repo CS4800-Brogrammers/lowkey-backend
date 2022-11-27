@@ -4,24 +4,49 @@ from pydoc import describe
 from random import randint
 from unicodedata import category
 from django.db import models
+from users.models import *
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
+#Reference the user model being used in the framework
+User = get_user_model()
+# Create your models here.
 
 # Create your models here.
 class Shop(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     shop_id = models.AutoField(primary_key=True)
     name = models.TextField()
     address = models.TextField()
     category = models.TextField()
-    description = models.TextField(null=True)
+    description = models.TextField()
+    rating = models.IntegerField(blank=True, null=True)
+    email = models.EmailField(null=True)
+    phone_number = models.CharField(max_length=12, null=True)
+
+    def get_shop_id(self):
+        return self.shop_id
+
+
+    
+        
+    ## Used to have a unique constraint using the user_id and shop_id
+
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['user', 'shop_id'], name='unique_shop_key'
+    #         )
+    #     ]
 
 class Product(models.Model):
-    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
+    shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='products')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
-    rating = models.IntegerField(default=randint(1,5))
-    shop = models.TextField(max_length=100, default="Brogrammers")
+    rating = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.product_name

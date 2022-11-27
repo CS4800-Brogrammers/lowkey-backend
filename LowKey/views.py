@@ -1,5 +1,5 @@
 from django.db.utils  import OperationalError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 from django.db import connections
 from django.conf import settings
@@ -9,32 +9,138 @@ import psycopg2
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import generics, status, authentication, authtoken
 from .models import *
+from users.models import *
 from .serializer import *
+from django.contrib.auth.decorators import login_required
+from .permissions import *
+from rest_framework_simplejwt.authentication import JWTAuthentication, JWTTokenUserAuthentication
 
 class ProductList(generics.ListCreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
     serializer_class = ProductSerializer
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
 
     def get_queryset(self):
         queryset = Product.objects.all()
         return queryset
+    
+    
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    lookup_field = "product_id"
+
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Deleted")
+
 #Shop API Endpoints
+
 class ShopList(generics.ListCreateAPIView):
+    model = Shop
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user, email=self.request.user.__getattribute__('email'))
+
 
 class ShopDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ShopSerializer
     queryset = Shop.objects.all()
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Shop Successfuly Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Shop Deleted Successfully")
+
+class ShopUser(generics.ListAPIView):
+    serializer_class = ShopSerializer
+
+    lookup_field = "user_id"
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        print(self.request.user.pk)
+        queryset = Shop.objects.filter(user=self.request.user.pk)
+        return queryset
+
+#Shop Product Endpoints
+class ShopProductList(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        shop_path = self.request.get_full_path()
+        shop_id_path = shop_path.split('/')[2]
+        print(shop_id_path)
+        queryset = Product.objects.filter(shop_id=shop_id_path)
+        return queryset
+    
+    
+
+    def perform_create(self, serializer):
+        shop_path = self.request.get_full_path()
+        print(shop_path)
+        shop_id_path = int(shop_path.split('/')[2])
+        print(shop_id_path)
+        shop = Shop.objects.get(pk=shop_id_path)
+        serializer.save(user=self.request.user, shop_id=shop)
+
+class ShopProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+
+    lookup_field = "product_id"
+
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        shop_path = self.request.get_full_path()
+        shop_id_path = shop_path.split('/')[2]
+        print(shop_id_path)
+        queryset = Product.objects.filter(shop_id=shop_id_path)
+        return queryset
+
+    def patch(self, request, *args, **kwargs):
+        super().patch(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Updated")
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+        return HttpResponse("Product Successfully Deleted")
 
     
 @api_view(['GET'])

@@ -183,16 +183,24 @@ REST_USE_JWT = True
 REST_FRAMEWORK = {    
     'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",
     'DEFAULT_AUTHENTICATION_CLASSES': [ 
-        'rest_framework.authentication.TokenAuthentication',    
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication'
     ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+   ),
 }
 
-JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_COOKIE = 'jwt-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
+
+    'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
 }
 
 # For storing images   

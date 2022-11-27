@@ -9,6 +9,9 @@ from users.models import *
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
+def shop_upload_to(instance, filename):
+    return 'shops/{filename}'.format(filename=filename)
+
 def product_upload_to(instance, filename):
     return 'products/{filename}'.format(filename=filename)
 
@@ -27,6 +30,7 @@ class Shop(models.Model):
     rating = models.IntegerField(blank=True, null=True)
     email = models.EmailField(null=True)
     phone_number = models.CharField(max_length=12, null=True)
+    image = models.ImageField(_("Image"), upload_to=shop_upload_to, default="placeholder.jpg")
 
     def get_shop_id(self):
         return self.shop_id

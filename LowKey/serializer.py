@@ -37,3 +37,8 @@ class ProductSerializer(serializers.ModelSerializer):
         'image',
         'rating']
         read_only_fields = ['shop_id']
+
+class SearchSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        return instance
+

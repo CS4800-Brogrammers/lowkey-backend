@@ -7,7 +7,10 @@ import bcrypt
 import googlemaps
 import psycopg2
 
+from django.db import connection
 from rest_framework.decorators import api_view
+from django.views.generic import TemplateView, ListView
+from itertools import chain
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import generics, status, authentication, authtoken
@@ -97,10 +100,9 @@ class ShopUser(generics.ListAPIView):
 
 #Shop Product Endpoints
 class ShopProductList(generics.ListCreateAPIView):
-    parser_classes = [MultiPartParser, FormParser]
     serializer_class = ProductSerializer
     
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+    permission_classes = [
     IsOwnerOrReadOnly]
 
     def get_queryset(self):
@@ -144,6 +146,26 @@ class ShopProductDetail(generics.RetrieveUpdateDestroyAPIView):
         super().delete(request, *args, **kwargs)
         return HttpResponse("Product Successfully Deleted")
 
+def dictfetchall(cursor):
+        """Return all rows from a cursor as a dict"""
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+
+class SearchView(generics.ListAPIView):
+
+    permission_classes = []
+    authentication_classes = []
+    serializer_class = SearchSerializer
+    
+
+    def get_queryset(self):
+        shop_queryset = Shop.objects.filter(name__icontains="Cookies").values('name')
+        product_queryset = Product.objects.filter(description__icontains="cookie").values('product_name')
+        total_query = shop_queryset.union(product_queryset)
+        return total_query
     
 @api_view(['GET'])
 def apiOverview(request):

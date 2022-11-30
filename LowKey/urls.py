@@ -10,6 +10,7 @@ urlpatterns = [
     path("product/<int:product_id>/", views.ProductDetail.as_view()),
     path('shops/', views.ShopList.as_view()),
     path('shops/<int:pk>/',views.ShopDetail.as_view()),
+    path('search/', views.SearchView.as_view()),
     path('test/', views.test),
     path('ketan/', views.ketan),
     path('ben/', views.ben, name = 'ben'),

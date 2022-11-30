@@ -162,8 +162,11 @@ class SearchView(generics.ListAPIView):
     
 
     def get_queryset(self):
-        shop_queryset = Shop.objects.filter(name__icontains="Cookies").values('name')
-        product_queryset = Product.objects.filter(description__icontains="cookie").values('product_name')
+        query = self.request.GET.get("q")
+        if query is None or query == "":
+            return HttpResponse("No results Found")
+        shop_queryset = Shop.objects.filter(name__icontains=query).values('name')
+        product_queryset = Product.objects.filter(description__icontains=query).values('product_name')
         total_query = shop_queryset.union(product_queryset)
         return total_query
     

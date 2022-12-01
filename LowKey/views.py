@@ -165,9 +165,11 @@ class SearchView(generics.ListAPIView):
         query = self.request.GET.get("q")
         if query is None or query == "":
             return HttpResponse("No results Found")
-        shop_queryset = Shop.objects.filter(name__icontains=query).values('name')
-        product_queryset = Product.objects.filter(description__icontains=query).values('product_name')
-        total_query = shop_queryset.union(product_queryset)
+        shop_from_name_queryset = Shop.objects.filter(name__icontains=query).values('name')
+        shop_from_description_qset = Shop.objects.filter(description__icontains=query).values('name')
+        product_from_description_qyset = Product.objects.filter(description__icontains=query).values('product_name')
+        product_from_name_qset = Product.objects.filter(product_name__icontains=query).values('product_name')
+        total_query = shop_from_name_queryset.union(shop_from_description_qset).union(product_from_description_qyset).union(product_from_name_qset)
         return total_query
     
 @api_view(['GET'])

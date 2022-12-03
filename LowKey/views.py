@@ -146,31 +146,39 @@ class ShopProductDetail(generics.RetrieveUpdateDestroyAPIView):
         super().delete(request, *args, **kwargs)
         return HttpResponse("Product Successfully Deleted")
 
-def dictfetchall(cursor):
-        """Return all rows from a cursor as a dict"""
-        columns = [col[0] for col in cursor.description]
-        return [
-            dict(zip(columns, row))
-            for row in cursor.fetchall()
-        ]
-
-class SearchView(generics.ListAPIView):
+class SearchShopView(generics.ListAPIView):
 
     permission_classes = []
     authentication_classes = []
-    serializer_class = SearchSerializer
+    serializer_class = ShopSerializer
     
 
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query is None or query == "":
             return HttpResponse("No results Found")
-        shop_from_name_queryset = Shop.objects.filter(name__icontains=query).values('name')
-        shop_from_description_qset = Shop.objects.filter(description__icontains=query).values('name')
-        product_from_description_qyset = Product.objects.filter(description__icontains=query).values('product_name')
-        product_from_name_qset = Product.objects.filter(product_name__icontains=query).values('product_name')
-        total_query = shop_from_name_queryset.union(shop_from_description_qset).union(product_from_description_qyset).union(product_from_name_qset)
+        shop_from_name_queryset = Shop.objects.filter(name__icontains=query)
+        shop_from_description_qset = Shop.objects.filter(description__icontains=query)
+        total_query = shop_from_name_queryset.union(shop_from_description_qset)
+        if len(total_query) == 0:
+            return HttpResponse("No Results Found")
         return total_query
+
+class SearchProductView(generics.ListAPIView):
+    permission_classes = []
+    authentication_classes = []
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query is None or query == "":
+            return HttpResponse("No results Found")
+
+        product_from_description_qyset = Product.objects.filter(description__icontains=query)
+        product_from_name_qset = Product.objects.filter(product_name__icontains=query)
+        total_query = product_from_description_qyset.union(product_from_name_qset)
+        return total_query
+
     
 @api_view(['GET'])
 def apiOverview(request):

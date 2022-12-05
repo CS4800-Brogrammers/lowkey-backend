@@ -118,7 +118,7 @@ class ShopProductList(generics.ListCreateAPIView):
         shop_id_path = int(shop_path.split('/')[2])
         print(shop_id_path)
         shop = Shop.objects.get(pk=shop_id_path)
-        serializer.save(user=self.request.user, shop_id=shop)
+        serializer.save(user=self.request.user, shop_id=shop, shop_name=shop.name)
 
 class ShopProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer

@@ -8,6 +8,7 @@ import googlemaps
 import psycopg2
 
 from django.db import connection
+from rest_framework.exceptions import *
 from rest_framework.decorators import api_view
 from django.views.generic import TemplateView, ListView
 from itertools import chain
@@ -154,15 +155,18 @@ class SearchShopView(generics.ListAPIView):
     
 
     def get_queryset(self):
-        query = self.request.GET.get("q")
-        if query is None or query == "":
-            return HttpResponse("No results Found")
-        shop_from_name_queryset = Shop.objects.filter(name__icontains=query)
-        shop_from_description_qset = Shop.objects.filter(description__icontains=query)
-        total_query = shop_from_name_queryset.union(shop_from_description_qset)
-        if len(total_query) == 0:
-            return HttpResponse("No Results Found")
-        return total_query
+        try:
+            query = self.request.GET.get("q")
+            shop_from_name_queryset = Shop.objects.filter(name__icontains=query)
+            shop_from_description_qset = Shop.objects.filter(description__icontains=query)
+            total_query = shop_from_name_queryset.union(shop_from_description_qset)
+            print(total_query.count())
+            if total_query.count() == 0:
+                return HttpResponse("No Results Found", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return total_query
+        except AttributeError:
+            print("No Results Found")
+            return HttpResponse("No Results Found", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class SearchProductView(generics.ListAPIView):
     permission_classes = []
@@ -170,16 +174,32 @@ class SearchProductView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        query = self.request.GET.get("q")
-        if query is None or query == "":
-            return HttpResponse("No results Found")
+        try:
+            query = self.request.GET.get("q")
+            price_filter = self.request.GET.get("price")
+            rating_filter = self.request.GET.get("rating")
 
-        product_from_description_qyset = Product.objects.filter(description__icontains=query)
-        product_from_name_qset = Product.objects.filter(product_name__icontains=query)
-        total_query = product_from_description_qyset.union(product_from_name_qset)
-        return total_query
+            from_name= Product.objects.filter(product_name__icontains=query)
+            from_description = Product.objects.filter(description__icontains=query)
+            from_name_description = from_name.union(from_description)
+            total_query = from_name_description
+            if price_filter is not None:
+                price_query = Product.objects.filter(price__lte=price_filter)
+                total_query = from_name_description.intersection(price_query)
+            if rating_filter is not None:
+                rating_query = Product.objects.filter(rating__gte=rating_filter)
+                total_query = from_name_description.intersection(rating_query)
+            # if(len(total_query) == 0):
+            #     return HttpResponse("No Results Found")
+            return total_query
+        except AttributeError:
+            return HttpResponse("No Results Found")
+        except ValueError:
+            return HttpResponse("No Results Found")
 
-    
+def custom_500(request):
+    return HttpResponse("No Results Found")
+
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {

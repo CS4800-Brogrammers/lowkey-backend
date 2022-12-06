@@ -22,3 +22,7 @@ urlpatterns = [
     path('db-status/', views.database_status)
     # path('connect/', ReactView.as_view(), name = "something")
 ]
+
+from django.conf.urls import handler500
+
+handler500 = 'LowKey.views.custom_500'

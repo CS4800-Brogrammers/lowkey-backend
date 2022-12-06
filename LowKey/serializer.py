@@ -26,14 +26,16 @@ class ShopSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     shop_id = ShopSerializer(read_only=True).data.get('shop_id')
+    shop_name = ShopSerializer(read_only=True).data.get('name')
     class Meta:
         lookup_field = "product_id"
         model = Product
         fields = ['product_id',
         'shop_id',
+        'shop_name',
         'product_name',
         'price',
         'description',
         'image',
         'rating']
-        read_only_fields = ['shop_id']
+        read_only_fields = ['shop_id', 'shop_name']

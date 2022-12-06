@@ -23,7 +23,7 @@ User = get_user_model()
 class Shop(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     shop_id = models.AutoField(primary_key=True)
-    name = models.TextField()
+    name = models.TextField(unique=True)
     address = models.TextField()
     category = models.TextField()
     description = models.TextField()
@@ -49,6 +49,7 @@ class Shop(models.Model):
 
 class Product(models.Model):
     shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='products')
+    shop_name = models.TextField(null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=100)
